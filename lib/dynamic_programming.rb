@@ -1,8 +1,13 @@
 class DynamicProgramming
-  attr_accessor :blair_cache
+  attr_accessor :blair_cache, :frog_hops_cache
 
   def initialize
     @blair_cache = {1 => 1, 2 => 2}
+    @frog_hops_cache = {
+      1 => [[1]], 
+      2 => [[1, 1], [2]], 
+      3 => [[1, 1, 1], [1, 2], [2, 1], [3]]
+    }
   end
 
   def blair_nums(n)
@@ -30,15 +35,35 @@ class DynamicProgramming
   end
 
   def frog_hops_bottom_up(n)
-
+    return frog_hops_cache[n] if frog_hops_cache[n]
+    ans = []
+    (1..3).each do |k|
+      ans.concat(frog_hops_bottom_up(n - k))
+    end
+    self.frog_hops_cache[n] = ans
+    ans
   end
 
   def frog_cache_builder(n)
-
+    cache = {
+      1 => [[1]], 
+      2 => [[1, 1], [2]], 
+      3 => [[1, 1, 1], [1, 2], [2, 1], [3]]
+    }
+    4.upto(n) do |num|
+      ans = []
+      (1..3).each do |k|
+        ans.concat(cache[n - k])
+      end
+      cache[num] = ans
+    end
+    cache
   end
 
   def frog_hops_top_down(n)
-
+    cache = frog_cache_builder(n)
+    frog_hops_top_down_helper(n)
+    cache[n]
   end
 
   def frog_hops_top_down_helper(n)
