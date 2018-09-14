@@ -35,29 +35,32 @@ class DynamicProgramming
   end
 
   def frog_hops_bottom_up(n)
-    return frog_hops_cache[n] if frog_hops_cache[n]
-    ans = []
-    (1..3).each do |k|
-      ans.concat(frog_hops_bottom_up(n - k))
-    end
-    self.frog_hops_cache[n] = ans
-    ans
+    cache = frog_cache_builder(n)
+    cache[n]
   end
 
   def frog_cache_builder(n)
-    cache = {
+    ways_cache = {
+      0 => [[]],
       1 => [[1]], 
-      2 => [[1, 1], [2]], 
-      3 => [[1, 1, 1], [1, 2], [2, 1], [3]]
+      2 => [[1, 1], [2]] 
     }
-    4.upto(n) do |num|
-      ans = []
-      (1..3).each do |k|
-        ans.concat(cache[n - k])
+    return ways_cache if n < 3
+
+    3.upto(n) do |i|
+      new_ways_set = []
+      (1..3).each do |first_step|
+        ways_cache[i - first_step].each do |way|
+          new_way = [first_step]
+          way.each do |step|
+            new_way << step
+          end
+          new_way_set << new_way
+        end
       end
-      cache[num] = ans
+      ways_cache[num] = new_ways_set
     end
-    cache
+    ways_cache
   end
 
   def frog_hops_top_down(n)
