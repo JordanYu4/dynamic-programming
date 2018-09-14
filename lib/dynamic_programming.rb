@@ -55,10 +55,10 @@ class DynamicProgramming
           way.each do |step|
             new_way << step
           end
-          new_way_set << new_way
+          new_ways_set << new_way
         end
       end
-      ways_cache[num] = new_ways_set
+      ways_cache[i] = new_ways_set
     end
     ways_cache
   end
