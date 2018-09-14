@@ -47,26 +47,20 @@ class DynamicProgramming
     }
     return ways_cache if n < 3
 
-    3.upto(n) do |i|
+    3.upto(n) do |step|
       new_ways_set = []
-      (1..3).each do |first_step|
-        ways_cache[i - first_step].each do |way|
-          new_way = [first_step]
-          way.each do |step|
-            new_way << step
-          end
-          new_ways_set << new_way
+      (1..3).each do |first_jump|
+        ways_cache[step - first_jump].each do |way|
+          new_ways_set << [first_jump].concat(way)
         end
       end
-      ways_cache[i] = new_ways_set
+      ways_cache[step] = new_ways_set
     end
     ways_cache
   end
 
   def frog_hops_top_down(n)
-    cache = frog_cache_builder(n)
     frog_hops_top_down_helper(n)
-    cache[n]
   end
 
   def frog_hops_top_down_helper(n)
