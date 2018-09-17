@@ -2,11 +2,12 @@ class DynamicProgramming
   attr_accessor :blair_cache, :frog_hops_cache
 
   def initialize
-    @blair_cache = {1 => 1, 2 => 2}
+    @blair_cache = {
+      1 => 1, 2 => 2}
     @frog_hops_cache = {
+      0 => [[]], 
       1 => [[1]], 
-      2 => [[1, 1], [2]], 
-      3 => [[1, 1, 1], [1, 2], [2, 1], [3]]
+      2 => [[1, 1], [2]]
     }
   end
 
@@ -60,11 +61,16 @@ class DynamicProgramming
   end
 
   def frog_hops_top_down(n)
+    return frog_hops_cache[n] if frog_hops_cache[n]
+    ways_set = 
+    self.blair_cache[n] = ans
+    return ans
+
     frog_hops_top_down_helper(n)
   end
 
   def frog_hops_top_down_helper(n)
-
+    
   end
 
   def super_frog_hops(n, k)
